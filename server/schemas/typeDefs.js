@@ -1,21 +1,6 @@
 const { gql } = require('apollo-server-express');
 
 const typeDefs = gql`
-
-type Query {
-  me: User //! do I need the square brackets or is that only used for arrays?
-  }
-
-type Mutation {
-  login(email: String!, password: String!): Auth
-
-  addUser(username: String!, email: String!, password: String!): Auth
-
-  saveBook(description: String!, title: String!, bookId: ID!, image: String!, link: String! ): User
-
-  removeBook(bookId: ID!): User
-}
-
 type User {
   _id: ID
   username: String
@@ -36,5 +21,19 @@ type Book {
 type Auth {
   token: ID!
   user: User
+}
+
+type Query {
+  me: User //! do I need the square brackets or is that only used for arrays?
+  }
+
+type Mutation {
+  login(email: String!, password: String!): Auth
+
+  addUser(username: String!, email: String!, password: String!): Auth
+
+  saveBook(description: String!, title: String!, bookId: ID!, image: String!, link: String! ): User
+
+  removeBook(bookId: ID!): User
 }
 `;
