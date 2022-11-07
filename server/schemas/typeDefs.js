@@ -32,7 +32,7 @@ type Mutation {
 
   addUser(username: String!, email: String!, password: String!): Auth
 
-  saveBook(description: String!, title: String!, bookId: ID!, image: String!, link: String! ): User
+  saveBook(book: Book!): User //! Henriette solution to make single book reference Book type above
 
   removeBook(bookId: ID!): User
 }
