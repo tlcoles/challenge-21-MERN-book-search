@@ -6,4 +6,6 @@ const resolvers = {
             return Book.find({});
         }
     }
-}
+};
+
+module.exports = resolvers;
