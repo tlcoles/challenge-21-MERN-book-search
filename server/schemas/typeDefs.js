@@ -5,13 +5,13 @@ type User {
   _id: ID
   username: String
   email: String
-  bookCount: Number
+  bookCount: Int
   savedBooks: [Book]
 }
 
 type Book {
   bookId: String
-  authors: [bookSchema] //! not sure this is right here; search "savedBooks: [bookSchema]" as example
+  authors: [String]
   description: String
   title: String
   image: String
@@ -24,16 +24,13 @@ type Auth {
 }
 
 type Query {
-  me: User //! do I need the square brackets or is that only used for arrays?
+  me: User
   }
 
 type Mutation {
   login(email: String!, password: String!): Auth
-
   addUser(username: String!, email: String!, password: String!): Auth
-
-  saveBook(book: Book!): User //! Henriette solution to make single book reference Book type above
-
+  saveBook(book: Book!): User
   removeBook(bookId: ID!): User
 }
 `;

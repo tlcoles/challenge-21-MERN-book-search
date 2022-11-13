@@ -3,7 +3,7 @@ import { gql } from '@apollo/client';
 export const LOGIN_USER = gql`
   mutation login($email: String!, $password: String!) {
     login(email: $email, password: $password) {
-      token //! this requires token setup in App.js
+      token
       user {
         _id
         username
@@ -26,9 +26,9 @@ export const ADD_USER = gql`
 
 export const SAVE_BOOK = gql`
   mutation saveBook($book: Book!) {
-    saveBook(book: $book) { //! not sure this will work
+    saveBook(book: $book) { 
         bookId
-        authors//! not sure this is correct for handling array
+        authors
         description
         title
         image
@@ -39,9 +39,9 @@ export const SAVE_BOOK = gql`
 
 export const REMOVE_BOOK = gql`
   mutation removeBook($book: Book!) {
-    removeBook(book: $book) { //! not sure this will work
+    removeBook(book: $book) { 
         bookId
-        authors//! not sure this is correct for handling array
+        authors
         description
         title
         image

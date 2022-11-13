@@ -7,10 +7,15 @@ const resolvers = {
         // find all books
         books: async () => {
             return Book.find({});
-        }
+        },
 
         //!  get a single user by either their id or their username
         // insert code here
+        user: async (parent, {id, username}) => {
+            return User.findOne({
+                $or: [{ _id: id }, { username: username }],
+            });
+          },
 
         //!  create a user, sign a token, and send it back (to client/src/components/SignUpForm.js)
         // insert code here

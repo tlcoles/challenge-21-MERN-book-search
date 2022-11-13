@@ -9,6 +9,7 @@ const bookSchema = new Schema({
   authors: [
     {
       type: String,
+      required: true,
     },
   ],
   description: {
@@ -28,6 +29,6 @@ const bookSchema = new Schema({
   },
 });
 
-const Book = model('Book', bookSchema);
+const Book = model("User", bookSchema);
 
-module.exports = bookSchema;
+module.exports = { Book, bookSchema };

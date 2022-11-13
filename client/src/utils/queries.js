@@ -13,7 +13,7 @@ export const GET_ME = gql`
                 bookId
                 image
                 link
-                authors //! is it possible that this needs to be different because it can be an array?
+                authors
             }
         }
     }
