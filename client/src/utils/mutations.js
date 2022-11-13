@@ -36,3 +36,16 @@ export const SAVE_BOOK = gql`
     }
   }
 `;
+
+export const REMOVE_BOOK = gql`
+  mutation removeBook($book: Book!) {
+    removeBook(book: $book) { //! not sure this will work
+        bookId
+        authors//! not sure this is correct for handling array
+        description
+        title
+        image
+        link
+    }
+  }
+`;
