@@ -1,35 +1,54 @@
 const { AuthenticationError } = require('apollo-server-express');
 const { signToken } = require('../utils/auth');
-const { Book, User } = require('../models');
+const { User } = require('../models');
 
 const resolvers = {
-    Query: {
-        // find all books
-        books: async () => {
-            return Book.find({});
-        },
+  Query: {
+    me: async (parent, { id, username }) => {
+      return User.findOne({
+        $or: [{ _id: id }, { username: username }],
+      });
+    },
+  },
+  Mutation: {
+    addUser: async (parent, { username, email, password }) => {
+      const user = await User.create({ username, email, password });
+      const token = signToken(user);
+      return { token, user };
+    },
+    login: async (parent, { email, password }) => {
+      const user = await User.findOne({ email });
 
-        //!  get a single user by either their id or their username
-        // insert code here
-        user: async (parent, {id, username}) => {
-            return User.findOne({
-                $or: [{ _id: id }, { username: username }],
-            });
-          },
+      if (!user) {
+        throw new AuthenticationError("No user found with this email address");
+      }
 
-        //!  create a user, sign a token, and send it back (to client/src/components/SignUpForm.js)
-        // insert code here
+      const correctPw = await user.isCorrectPassword(password);
 
-        //!  login a user, sign a token, and send it back (to client/src/components/LoginForm.js)
-        // insert code here
+      if (!correctPw) {
+        throw new AuthenticationError("Incorrect credentials");
+      }
 
-        //!  save a book to a user's `savedBooks` field by adding it to the set (to prevent duplicates)
-        // insert code here
+      const token = signToken(user);
 
-        //!  remove a book from `savedBooks`
-        // insert code here
-
-    }
+      return { token, user };
+    },
+    saveBook: async (parent, { body }, context) => {
+      return await User.findOneAndUpdate(
+        { _id: context.user._id },
+        { $addToSet: { savedBooks: body } },
+        { new: true, runValidators: true }
+      );
+    },
+    removeBook: async (parent, { bookId }, context) => {
+        return User.findOneAndUpdate(
+          { _id: context.user._Id },
+          { $pull: { savedBooks: { _id: bookId } } },
+          { new: true }
+        );
+    },
+  },
 };
+
 
 module.exports = resolvers;
