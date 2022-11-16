@@ -1,17 +1,31 @@
 import React, { useState, useEffect } from 'react';
 import { Jumbotron, Container, CardColumns, Card, Button } from 'react-bootstrap';
 
+//! import useQuery, GET_ME, and useParams to use useQuery() hook
+import { useQuery, useMutation } from '@apollo/client';
+import { useParams } from 'react-router-dom';
+import { GET_ME } from '../utils/queries';
+
+
 import { getMe, deleteBook } from '../utils/API';
 import Auth from '../utils/auth';
 import { removeBookId } from '../utils/localStorage';
 
+//! use the useQuery() Hook to execute the GET_ME query on load and save it to a variable named userData
+//! Remove the useEffect() Hook that sets the state for UserData.
 const SavedBooks = () => {
   const [userData, setUserData] = useState({});
 
   // use this to determine if `useEffect()` hook needs to run again
   const userDataLength = Object.keys(userData).length;
 
-  //! Remove the useEffect() Hook that sets the state for UserData.
+  const { _id } = useParams();
+  const { loading, data } = useQuery(GET_ME, {
+    variables: { userData: _id }
+  });
+
+  const me = data?.me || {}; //! not sure about this; have tested [] and {} with no difference but believe it may be important to retrieving books
+
   // useEffect(() => {
   //   const getUserData = async () => {
   //     try {
@@ -34,8 +48,11 @@ const SavedBooks = () => {
   //     }
   //   };
 
+  //! not sure I do not need this for something since I cannot see saved books
   //   getUserData();
   // }, [userDataLength]);
+
+
 
   // create function that accepts the book's mongo _id value as param and deletes the book from the database
   const handleDeleteBook = async (bookId) => {
@@ -100,5 +117,4 @@ const SavedBooks = () => {
     </>
   );
 };
-
 export default SavedBooks;
